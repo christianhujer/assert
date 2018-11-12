@@ -1,3 +1,4 @@
+// assert provides JUnit-style assertions for go testing.
 package assert
 
 import (
@@ -7,7 +8,11 @@ import (
 	"testing"
 )
 
-func AssertEquals(t *testing.T, expected interface{}, actual interface{}) {
+// Equals asserts that two arguments are equal.
+// Currently, it supports the following types of arguments:
+// - []byte
+// - Everything that supports ==/!=
+func Equals(t *testing.T, expected interface{}, actual interface{}) {
 	switch x := actual.(type) {
 	case []byte:
 		if bytes.Compare(x, actual.([]byte)) != 0 {
