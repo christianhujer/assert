@@ -24,4 +24,3 @@ func Equals(t *testing.T, expected interface{}, actual interface{}) {
 		}
 	}
 }
-

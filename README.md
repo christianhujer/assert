@@ -1,2 +1,4 @@
 # assert
-Assertions for unit tests in Golang
+Assertions for unit tests in Golang, similar to JUnit.
+
+## 
