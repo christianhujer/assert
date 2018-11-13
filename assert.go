@@ -66,7 +66,7 @@ func NotNil(target interface{}, pointer interface{}) error {
 // Currently, it supports the following types of arguments:
 // - []byte
 // - Everything that supports ==/!=
-func Equals(target interface{}, expected interface{}, actual interface{}) error {
+func Equals(target interface{}, expected, actual interface{}) error {
 	switch x := expected.(type) {
 	case []byte:
 		if bytes.Compare(x, actual.([]byte)) != 0 {
@@ -86,7 +86,7 @@ func Equals(target interface{}, expected interface{}, actual interface{}) error 
 // Currently, it supports the following types of arguments:
 // - []byte
 // - Everything that supports ==/!=
-func NotEquals(target interface{}, expected interface{}, actual interface{}) error {
+func NotEquals(target interface{}, expected, actual interface{}) error {
 	switch x := expected.(type) {
 	case []byte:
 		if bytes.Compare(x, actual.([]byte)) == 0 {
@@ -104,7 +104,7 @@ func NotEquals(target interface{}, expected interface{}, actual interface{}) err
 // The first argument target is to be forwarded to Fail(target interface{}, msg string) in case the assertion fails.
 // In case of "testing", pass t *testing.T as the first argument.
 // Implemented using reflect.DeepEqual
-func DeepEquals(target interface{}, expected interface{}, actual interface{}) error {
+func DeepEquals(target interface{}, expected, actual interface{}) error {
 	if !reflect.DeepEqual(expected, actual) {
 		return Fail(target, fmt.Sprintf("Expected: %s (type %v)\nActual: %s (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
 	}
@@ -115,7 +115,7 @@ func DeepEquals(target interface{}, expected interface{}, actual interface{}) er
 // The first argument target is to be forwarded to Fail(target interface{}, msg string) in case the assertion fails.
 // In case of "testing", pass t *testing.T as the first argument.
 // Implemented using reflect.DeepEqual
-func NotDeepEquals(target interface{}, expected interface{}, actual interface{}) error {
+func NotDeepEquals(target interface{}, expected, actual interface{}) error {
 	if reflect.DeepEqual(expected, actual) {
 		return Fail(target, fmt.Sprintf("Expected: %s (type %v)\nActual: %s (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
 	}
