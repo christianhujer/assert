@@ -24,6 +24,11 @@ To use `assert` with `"testing"`, pass `t *testing.T` as first argument to the a
 
 Example:
 ```
+import (
+	"github.com/christianhujer/assert"
+	"testing"
+)
+
 func TestExample(t *testing.T) {
 	assert.Equals(t, 23, 42)
 }
@@ -34,6 +39,10 @@ To use `assert` with `"godog"`, return the `error` returned by the assertion.
 
 Example:
 ```
+import (
+	"github.com/christianhujer/assert"
+)
+
 func iMUSTHaveHotdogs(expectedHotdogsRemaining int) error {
 	return assert.Equals(nil, expectedHotdogsRemaining, hotdogs)
 }
