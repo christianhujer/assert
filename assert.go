@@ -89,3 +89,23 @@ func NotEquals(target interface{}, expected interface{}, actual interface{}) {
 		}
 	}
 }
+
+// DeepEquals asserts that two arguments are equal, performing a deep comparison.
+// The first argument target is to be forwarded to Fail(target interface{}, msg string) in case the assertion fails.
+// In case of "testing", pass t *testing.T as the first argument.
+// Implemented using reflect.DeepEqual
+func DeepEquals(target interface{}, expected interface{}, actual interface{}) {
+	if !reflect.DeepEqual(expected, actual) {
+		Fail(target, fmt.Sprintf("Expected: %s (type %v)\nActual: %s (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
+	}
+}
+
+// NotDeepEquals asserts that two arguments are not equal, performing a deep comparison.
+// The first argument target is to be forwarded to Fail(target interface{}, msg string) in case the assertion fails.
+// In case of "testing", pass t *testing.T as the first argument.
+// Implemented using reflect.DeepEqual
+func NotDeepEquals(target interface{}, expected interface{}, actual interface{}) {
+	if reflect.DeepEqual(expected, actual) {
+		Fail(target, fmt.Sprintf("Expected: %s (type %v)\nActual: %s (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
+	}
+}

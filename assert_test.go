@@ -137,3 +137,35 @@ func TestNotNilNotNil(t *testing.T) {
 		t.Error("Expected assert.NotNil(t, ptr) to pass")
 	}
 }
+
+func TestDeepEqualsPass(t *testing.T) {
+	failed = false
+	DeepEquals(t, []byte{1}, []byte{1})
+	if failed {
+		t.Error("Expected assert.DeepEquals(t, []byte{1}, []byte{1}) to pass")
+	}
+}
+
+func TestDeepEqualsFail(t *testing.T) {
+	failed = false
+	DeepEquals(t, []byte{1}, []byte{2})
+	if !failed {
+		t.Error("Expected assert.DeepEquals(t, []byte{1}, []byte{2}) to fail")
+	}
+}
+
+func TestNotDeepEqualsPass(t *testing.T) {
+	failed = false
+	NotDeepEquals(t, []byte{1}, []byte{2})
+	if failed {
+		t.Error("Expected assert.NotDeepEquals(t, []byte{1}, []byte{2}) to pass")
+	}
+}
+
+func TestNotDeepEqualsFail(t *testing.T) {
+	failed = false
+	NotDeepEquals(t, []byte{1}, []byte{1})
+	if !failed {
+		t.Error("Expected assert.NotDeepEquals(t, []byte{1}, []byte{1}) to pass")
+	}
+}
