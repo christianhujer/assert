@@ -1,16 +1,15 @@
 package assert
 
 import (
-	"errors"
 	"testing"
 )
 
 var failed = false
 
 func init() {
-	Fail = func(target interface{}, msg string) error {
+	Fail = func(target interface{}, err error) error {
 		failed = true
-		return errors.New(msg)
+		return err
 	}
 }
 

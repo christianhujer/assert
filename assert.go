@@ -1,23 +1,22 @@
-// assert provides JUnit-style assertions for go testing.
+// Package assert provides JUnit-style assertions for go testing.
 package assert
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"reflect"
 	"testing"
 )
 
 // Fail is a pointer to a function that fails a test.
-// It takes two arguments, the target and the message.
+// It takes two arguments, the target and the error.
 // The default implementation assumes that the target is of type *testing.T and invokes its Error() function.
 // Reassign this function pointer if you are working with a framework other than "testing".
-var Fail = func(target interface{}, msg string) error {
+var Fail = func(target interface{}, err error) error {
 	if target != nil {
-		target.(*testing.T).Error(msg)
+		target.(*testing.T).Error(err)
 	}
-	return errors.New(msg)
+	return err
 }
 
 // True asserts that a condition is true.
@@ -25,7 +24,7 @@ var Fail = func(target interface{}, msg string) error {
 // In case of "testing", pass t *testing.T as the first argument.
 func True(target interface{}, condition bool) error {
 	if !condition {
-		return Fail(target, fmt.Sprintf("Expected condition to be true"))
+		return Fail(target, fmt.Errorf("expected condition to be true"))
 	}
 	return nil
 }
@@ -35,7 +34,7 @@ func True(target interface{}, condition bool) error {
 // In case of "testing", pass t *testing.T as the first argument.
 func False(target interface{}, condition bool) error {
 	if condition {
-		return Fail(target, fmt.Sprintf("Expected condition to be false"))
+		return Fail(target, fmt.Errorf("expected condition to be false"))
 	}
 	return nil
 }
@@ -45,7 +44,7 @@ func False(target interface{}, condition bool) error {
 // In case of "testing", pass t *testing.T as the first argument.
 func Nil(target interface{}, pointer interface{}) error {
 	if pointer != nil {
-		return Fail(target, fmt.Sprintf("Expected pointer to be nil"))
+		return Fail(target, fmt.Errorf("expected pointer to be nil"))
 	}
 	return nil
 }
@@ -55,7 +54,7 @@ func Nil(target interface{}, pointer interface{}) error {
 // In case of "testing", pass t *testing.T as the first argument.
 func NotNil(target interface{}, pointer interface{}) error {
 	if pointer == nil {
-		return Fail(target, fmt.Sprintf("Expected pointer to be nil"))
+		return Fail(target, fmt.Errorf("expected pointer to be nil"))
 	}
 	return nil
 }
@@ -70,11 +69,11 @@ func Equals(target interface{}, expected, actual interface{}) error {
 	switch x := expected.(type) {
 	case []byte:
 		if bytes.Compare(x, actual.([]byte)) != 0 {
-			return Fail(target, fmt.Sprintf("Expected and actual byte array differ."))
+			return Fail(target, fmt.Errorf("expected and actual byte array differ"))
 		}
 	default:
 		if expected != actual {
-			return Fail(target, fmt.Sprintf("Expected: %s (type %v)\nActual: %s (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
+			return Fail(target, fmt.Errorf("\nExpected: <%s> (type %v)\nActual:   <%s> (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
 		}
 	}
 	return nil
@@ -90,11 +89,11 @@ func NotEquals(target interface{}, expected, actual interface{}) error {
 	switch x := expected.(type) {
 	case []byte:
 		if bytes.Compare(x, actual.([]byte)) == 0 {
-			return Fail(target, fmt.Sprintf("Expected and actual byte array differ."))
+			return Fail(target, fmt.Errorf("expected and actual byte array differ"))
 		}
 	default:
 		if expected == actual {
-			return Fail(target, fmt.Sprintf("Expected: %s (type %v)\nActual: %s (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
+			return Fail(target, fmt.Errorf("\nExpected: <%s> (type %v)\nActual:   <%s> (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
 		}
 	}
 	return nil
@@ -106,7 +105,7 @@ func NotEquals(target interface{}, expected, actual interface{}) error {
 // Implemented using reflect.DeepEqual
 func DeepEquals(target interface{}, expected, actual interface{}) error {
 	if !reflect.DeepEqual(expected, actual) {
-		return Fail(target, fmt.Sprintf("Expected: %s (type %v)\nActual: %s (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
+		return Fail(target, fmt.Errorf("\nExpected: <%s> (type %v)\nActual:   <%s> (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
 	}
 	return nil
 }
@@ -117,7 +116,7 @@ func DeepEquals(target interface{}, expected, actual interface{}) error {
 // Implemented using reflect.DeepEqual
 func NotDeepEquals(target interface{}, expected, actual interface{}) error {
 	if reflect.DeepEqual(expected, actual) {
-		return Fail(target, fmt.Sprintf("Expected: %s (type %v)\nActual: %s (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
+		return Fail(target, fmt.Errorf("\nExpected: <%s> (type %v)\nActual:   <%s> (type %v)\n", expected, reflect.TypeOf(expected), actual, reflect.TypeOf(actual)))
 	}
 	return nil
 }
