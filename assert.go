@@ -13,8 +13,8 @@ import (
 // The default implementation assumes that the target is of type *testing.T and invokes its Error() function.
 // Reassign this function pointer if you are working with a framework other than "testing".
 var Fail = func(target interface{}, err error) error {
-	if target != nil {
-		target.(*testing.T).Error(err)
+	if t, _ := target.(*testing.T); t != nil {
+		t.Error(err)
 	}
 	return err
 }
